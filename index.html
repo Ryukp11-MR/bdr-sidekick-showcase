@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDR Sidekick — the tool does the admin, you just talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#241526; --plum-2:#1b0f1d; --cream:#F3EFDA;
+    --cream-60:rgba(243,239,218,0.62); --cream-35:rgba(243,239,218,0.35);
+    --cream-12:rgba(243,239,218,0.12); --cream-06:rgba(243,239,218,0.06);
+    --pink:#FF2D8E; --amber:#FFC48A; --green:#7DD9A0;
+    --serif:'Fraunces',Georgia,serif; --sans:'Hanken Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans); color:var(--cream); line-height:1.6;
+    background:
+      radial-gradient(1200px 600px at 80% -5%, rgba(255,45,142,0.16), transparent 60%),
+      radial-gradient(900px 500px at 0% 30%, rgba(255,196,138,0.10), transparent 55%),
+      linear-gradient(160deg, var(--plum), var(--plum-2));
+    background-attachment:fixed; min-height:100vh; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:0.4; z-index:1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px; position:relative; z-index:2}
+  .mono{font-family:var(--mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber)}
+
+  /* hero */
+  header{padding:96px 0 60px}
+  .eyebrow{opacity:0; animation:rise .7s ease forwards}
+  h1{
+    font-family:var(--serif); font-weight:500; font-size:clamp(40px,7vw,84px);
+    line-height:1.02; letter-spacing:-0.02em; margin:22px 0 0; max-width:14ch;
+    opacity:0; animation:rise .8s ease .1s forwards;
+  }
+  h1 em{font-style:italic; color:var(--pink)}
+  .lede{
+    font-size:clamp(17px,2.2vw,21px); color:var(--cream-60); max-width:54ch; margin-top:26px;
+    opacity:0; animation:rise .8s ease .25s forwards;
+  }
+  .stats{display:flex; flex-wrap:wrap; gap:14px; margin-top:44px; opacity:0; animation:rise .8s ease .4s forwards}
+  .stat{
+    background:var(--cream-06); border:1px solid var(--cream-12); border-radius:16px;
+    padding:20px 24px; min-width:150px; flex:1;
+  }
+  .stat .n{font-family:var(--serif); font-size:38px; font-weight:600; line-height:1; color:var(--cream)}
+  .stat .n .u{font-size:20px; color:var(--amber)}
+  .stat .l{font-size:13px; color:var(--cream-60); margin-top:8px}
+
+  section{padding:64px 0; position:relative}
+  .tag{display:block; margin-bottom:14px}
+  h2{font-family:var(--serif); font-weight:500; font-size:clamp(28px,4vw,46px); letter-spacing:-0.02em; max-width:18ch}
+  .sub{color:var(--cream-60); max-width:56ch; margin-top:14px; font-size:17px}
+
+  /* reveal */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1; transform:none}
+
+  /* before/after */
+  .ba{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:36px}
+  .col{border-radius:18px; padding:26px}
+  .col.old{background:rgba(255,255,255,0.02); border:1px dashed var(--cream-12)}
+  .col.new{background:rgba(255,45,142,0.06); border:1px solid rgba(255,45,142,0.25)}
+  .col h3{font-family:var(--mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:18px}
+  .col.old h3{color:var(--cream-35)} .col.new h3{color:var(--pink)}
+  .row{display:flex; gap:11px; align-items:flex-start; padding:9px 0; font-size:15px}
+  .row i{flex:none; width:18px; height:18px; margin-top:2px}
+  .col.old .row{color:var(--cream-35); text-decoration:line-through; text-decoration-color:rgba(243,239,218,0.25)}
+  .tick{color:var(--green)} .cross{color:var(--cream-35)}
+
+  /* loop */
+  .loop{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:38px}
+  .node{
+    background:var(--cream-06); border:1px solid var(--cream-12); border-radius:16px; padding:18px;
+    cursor:pointer; transition:all .25s ease; position:relative;
+  }
+  .node:hover{border-color:rgba(255,196,138,0.5); transform:translateY(-3px)}
+  .node.active{background:rgba(255,196,138,0.10); border-color:var(--amber)}
+  .node .k{font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:0.1em}
+  .node .t{font-family:var(--serif); font-size:19px; font-weight:500; margin-top:8px}
+  .node .auto{display:inline-block; margin-top:10px; font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--green); border:1px solid rgba(125,217,160,0.3); border-radius:20px; padding:3px 9px}
+  .detail{
+    margin-top:16px; background:rgba(0,0,0,0.18); border:1px solid var(--cream-12); border-left:3px solid var(--amber);
+    border-radius:0 14px 14px 0; padding:22px 24px; font-size:16px; color:var(--cream); min-height:84px;
+  }
+  .detail .d-k{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); display:block; margin-bottom:8px}
+  .detail b{color:var(--pink); font-weight:600}
+
+  /* cards */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:38px}
+  .card{background:var(--cream-06); border:1px solid var(--cream-12); border-radius:18px; padding:24px; transition:all .25s ease}
+  .card:hover{transform:translateY(-4px); border-color:rgba(255,45,142,0.35); background:rgba(255,45,142,0.05)}
+  .card .ic{font-size:22px; color:var(--amber); margin-bottom:14px; display:block}
+  .card h4{font-family:var(--serif); font-weight:500; font-size:21px; margin-bottom:9px}
+  .card p{font-size:14.5px; color:var(--cream-60)}
+  .card .save{display:block; margin-top:14px; font-family:var(--mono); font-size:11px; color:var(--green); letter-spacing:0.04em}
+
+  /* trust */
+  .trust{background:var(--cream-06); border:1px solid var(--cream-12); border-radius:20px; padding:34px; margin-top:38px; display:grid; grid-template-columns:1fr 1fr; gap:28px}
+  .trust div h4{font-family:var(--serif); font-size:20px; font-weight:500; margin-bottom:8px}
+  .trust div p{color:var(--cream-60); font-size:14.5px}
+
+  /* cta */
+  .cta{text-align:center; padding:80px 0 96px}
+  .cta h2{margin:0 auto; max-width:20ch}
+  .start{
+    display:inline-block; margin-top:30px; background:var(--pink); color:#fff; font-family:var(--mono);
+    font-size:14px; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none;
+    padding:16px 34px; border-radius:40px; transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .start:hover{transform:translateY(-2px); box-shadow:0 12px 40px rgba(255,45,142,0.35)}
+  .start{border:none; cursor:pointer}
+  .setup{max-width:680px; margin:30px auto 0; display:grid; gap:14px; text-align:left}
+  .setup-card{background:var(--cream-06); border:1px solid var(--cream-12); border-radius:16px; padding:22px 24px}
+  .setup-k{font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber)}
+  .setup-card p{font-size:14.5px; color:var(--cream-60); margin:10px 0 14px} .setup-card b{color:var(--cream)}
+  .steps{margin:14px 0 16px; padding-left:22px; display:grid; gap:9px}
+  .steps li{font-size:14.5px; color:var(--cream-60); padding-left:4px}
+  .steps li::marker{color:var(--amber); font-family:var(--mono); font-size:12px}
+  .steps a{color:var(--amber); text-decoration:underline}
+  .cmd{display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.28); border:1px solid var(--cream-12); border-radius:12px; padding:12px 14px}
+  .cmd code{font-family:var(--mono); font-size:13px; color:var(--cream); flex:1; overflow-x:auto; white-space:nowrap}
+  .cmd button{font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--plum); background:var(--amber); border:none; border-radius:8px; padding:7px 12px; cursor:pointer; flex:none; transition:background .2s ease}
+  .cmd button:hover{background:#ffd6a8}
+  footer{text-align:center; color:var(--cream-35); font-size:13px; padding-bottom:50px; font-family:var(--mono)}
+
+  @keyframes rise{from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:none}}
+  @media(max-width:820px){
+    .ba,.trust{grid-template-columns:1fr} .loop{grid-template-columns:1fr 1fr} .cards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="mono eyebrow">BDR Sidekick · Wayground outbound</span>
+    <h1>The tool does the admin. You just <em>talk</em>.</h1>
+    <p class="lede">Research, dialing, phone-tree navigation, dispositions, call notes, and the next dial — handled for you. Sidekick clears the busywork off every call so your hour is spent on conversations, not clicks.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">~85<span class="u">%</span></div><div class="l">of dispositions filled in under a second</div></div>
+      <div class="stat"><div class="n">1<span class="u">-click</span></div><div class="l">full account research, no tab-hopping</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">manual dials or notes between calls</div></div>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <span class="mono tag">The difference</span>
+    <h2>Same hour. Far more of it spent talking.</h2>
+    <div class="ba">
+      <div class="col old">
+        <h3>The old way — every call</h3>
+        <div class="row"><i class="cross">✕</i>Open 5 tabs to research the account</div>
+        <div class="row"><i class="cross">✕</i>Mash the keypad through the phone tree</div>
+        <div class="row"><i class="cross">✕</i>Scramble for an opener while it rings</div>
+        <div class="row"><i class="cross">✕</i>Pick a disposition from a 16-item menu</div>
+        <div class="row"><i class="cross">✕</i>Type call notes from memory</div>
+        <div class="row"><i class="cross">✕</i>Navigate to the next prospect and dial</div>
+      </div>
+      <div class="col new">
+        <h3>With Sidekick</h3>
+        <div class="row"><i class="tick">✓</i>One click — account intel on screen</div>
+        <div class="row"><i class="tick">✓</i>It presses the right digits for you</div>
+        <div class="row"><i class="tick">✓</i>Tailored openers waiting on the panel</div>
+        <div class="row"><i class="tick">✓</i>Disposition filled automatically</div>
+        <div class="row"><i class="tick">✓</i>Notes written from the live transcript</div>
+        <div class="row"><i class="tick">✓</i>Next prospect auto-dials — stay on the headset</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <span class="mono tag">What happens on every dial</span>
+    <h2>The loop runs itself.</h2>
+    <p class="sub">Tap any step to see what Sidekick is doing while you focus on the prospect.</p>
+    <div class="loop" id="loop">
+      <div class="node active" data-k="During the call" data-d="Sidekick listens to the earpiece, transcribes it live, and reads the menu out loud to itself — then <b>presses the right digit</b> to route you to the right person. Dial-by-name and extensions too. You never touch the keypad.">
+        <span class="k">01</span><div class="t">Navigate the phone tree</div><span class="auto">automatic</span>
+      </div>
+      <div class="node" data-k="The moment they pick up" data-d="A human is detected and you take over — but the panel already shows <b>who they are, what their school uses, and openers tuned to them</b>. You walk in knowing more than they expect.">
+        <span class="k">02</span><div class="t">Know who answered</div><span class="auto">automatic</span>
+      </div>
+      <div class="node" data-k="The second you hang up" data-d="From the live transcript, Sidekick picks the <b>disposition</b> and writes <b>structured call notes</b> — ~85% land in under a second, the rest a few seconds later. No typing, no 16-item menu.">
+        <span class="k">03</span><div class="t">Disposition & notes</div><span class="auto">automatic</span>
+      </div>
+      <div class="node" data-k="Before you can blink" data-d="Log the call and Sidekick <b>auto-dials the next prospect</b> — no navigating, no clicking Call. Stay on the headset and keep your rhythm. Hit Pause any time to break.">
+        <span class="k">04</span><div class="t">On to the next</div><span class="auto">automatic</span>
+      </div>
+    </div>
+    <div class="detail" id="detail"><span class="d-k">During the call</span>Sidekick listens to the earpiece, transcribes it live, and reads the menu out loud to itself — then <b>presses the right digit</b> to route you to the right person. Dial-by-name and extensions too. You never touch the keypad.</div>
+  </section>
+
+  <section class="reveal">
+    <span class="mono tag">In your corner</span>
+    <h2>Everything a great dial needs, on tap.</h2>
+    <div class="cards">
+      <div class="card"><span class="ic">⚲</span><h4>1-click research</h4><p>Salesforce + Wayground usage pulled and summarized — district, usage, competitor, open opps, signals — without leaving your seat.</p><span class="save">saves ~5 tabs per account</span></div>
+      <div class="card"><span class="ic">☰</span><h4>Phone-tree autopilot</h4><p>Listens, reads the IVR, and presses the right option for the role you're after. Remembers trees it's seen before.</p><span class="save">zero keypad mashing</span></div>
+      <div class="card"><span class="ic">✎</span><h4>Openers that fit</h4><p>Reverse-pitch questions tuned to the school's data — so your first line lands instead of stalling.</p><span class="save">no blank-page panic</span></div>
+      <div class="card"><span class="ic">✓</span><h4>Auto disposition + notes</h4><p>Filled from the live transcript the moment you hang up. Accurate, structured, and consistent across the team.</p><span class="save">~0 minutes of admin</span></div>
+      <div class="card"><span class="ic">✦</span><h4>Email in your voice</h4><p>On email steps, type a line of context and get a sharp, personalized email — written to sound like you, not a template.</p><span class="save">drafts in seconds</span></div>
+      <div class="card"><span class="ic">◎</span><h4>Density & open-opp signals</h4><p>See which schools in the district already use Wayground and where deals are open — warm angles handed to you.</p><span class="save">built-in expansion plays</span></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <span class="mono tag">You stay in control</span>
+    <h2>Fast, but always yours to steer.</h2>
+    <div class="trust">
+      <div>
+        <h4>Pause whenever</h4>
+        <p>One tap stops the auto-dial between calls — finish your current call, grab a coffee, then resume. The headset is always yours.</p>
+      </div>
+      <div>
+        <h4>It never speaks for you</h4>
+        <p>Sidekick only listens and navigates menus. It never talks on the call and never speaks to a prospect — every word they hear is yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Spend your next hour talking, not clicking.</h2>
+    <button class="start" id="setupBtn">Get set up →</button>
+    <div class="setup" id="setupPanel" hidden>
+      <div class="setup-card">
+        <span class="setup-k">New machine — first time</span>
+        <ol class="steps">
+          <li>Create a <b>GitHub account</b> if you don't have one — <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a></li>
+          <li><b>Send your GitHub username to Aritra.</b> He grants repo access and you'll get an email invite — <b>click Accept</b> (the install can't clone until you do).</li>
+          <li>Aritra sends you <b>bootstrap.sh</b> and <b>shared.env</b> — save both to your <b>Downloads</b> folder.</li>
+          <li>Open <b>Terminal</b> (⌘-Space, type "Terminal") and paste:</li>
+        </ol>
+        <div class="cmd"><code id="cmd1">bash ~/Downloads/bootstrap.sh --env-file ~/Downloads/shared.env</code><button data-cmd="cmd1">copy</button></div>
+      </div>
+      <div class="setup-card">
+        <span class="setup-k">Already installed</span>
+        <p>Pull the latest and update — takes a few seconds:</p>
+        <div class="cmd"><code id="cmd2">cd ~/gtm-auto-dialer && git pull && bash update.sh</code><button data-cmd="cmd2">copy</button></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>BDR Sidekick · internal enablement · made for the Wayground outbound team</footer>
+
+</div>
+
+<script>
+  const nodes = document.querySelectorAll('.node');
+  const detail = document.getElementById('detail');
+  nodes.forEach(n => n.addEventListener('click', () => {
+    nodes.forEach(x => x.classList.remove('active'));
+    n.classList.add('active');
+    detail.innerHTML = '<span class="d-k">' + n.dataset.k + '</span>' + n.dataset.d;
+    detail.style.animation = 'none'; void detail.offsetWidth; detail.style.animation = 'rise .4s ease';
+  }));
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const setupBtn = document.getElementById('setupBtn');
+  const setupPanel = document.getElementById('setupPanel');
+  setupBtn.addEventListener('click', () => {
+    setupPanel.hidden = !setupPanel.hidden;
+    setupBtn.textContent = setupPanel.hidden ? 'Get set up →' : 'Setup steps ↓';
+  });
+  document.querySelectorAll('.cmd button').forEach(b => b.addEventListener('click', async () => {
+    const text = document.getElementById(b.dataset.cmd).textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const r = document.createRange(); r.selectNode(document.getElementById(b.dataset.cmd));
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); } catch {} s.removeAllRanges();
+    }
+    const old = b.textContent; b.textContent = 'copied ✓';
+    setTimeout(() => { b.textContent = old; }, 1600);
+  }));
+</script>
+</body>
+</html>
