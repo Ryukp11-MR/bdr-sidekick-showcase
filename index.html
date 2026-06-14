@@ -6,7 +6,7 @@
 <title>BDR Sidekick — does the busywork, you just talk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&family=Syne:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --plum:#241526; --plum-2:#1b0f1d; --cream:#F3EFDA;
@@ -147,8 +147,135 @@
   footer{text-align:center; color:var(--cream-35); font-size:13px; padding-bottom:50px; font-family:var(--mono)}
 
   @keyframes rise{from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:none}}
+
+  /* mockup section */
+  .mockup-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:38px}
+  .mockup-panel{position:relative}
+  .mockup-caption{font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream-60); margin-top:12px; text-align:center}
+  .app-frame{
+    width:100%; aspect-ratio:3/4; border-radius:14px; overflow:hidden; position:relative;
+    background:#3B142A; border:1px solid rgba(243,239,218,0.1);
+    box-shadow:0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(243,239,218,0.06);
+    font-family:'DM Sans',sans-serif; color:#F3EFDA; font-size:11px; line-height:1.4;
+    display:flex; flex-direction:column; padding:10px; gap:6px;
+  }
+  .app-frame *{box-sizing:border-box; margin:0; padding:0}
+  .app-frame::before{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:0.3; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+  .app-frame .af-header{
+    display:flex; align-items:center; gap:8px; padding:6px 8px; position:relative; z-index:1;
+    background:rgba(243,239,218,0.03); border-radius:10px; border:1px solid rgba(243,239,218,0.06);
+  }
+  .af-dot{width:7px; height:7px; border-radius:50%; flex:none}
+  .af-dot.green{background:#7dd9a0; box-shadow:0 0 6px rgba(125,217,160,0.6)}
+  .af-dot.pink{background:#FF319F; box-shadow:0 0 6px rgba(255,49,159,0.6)}
+  .af-dot.amber{background:#FFC48A; box-shadow:0 0 6px rgba(255,196,138,0.6)}
+  .af-encourage{font-family:'Syne',sans-serif; font-size:10px; font-weight:600; color:rgba(243,239,218,0.7); flex:1}
+  .af-metrics{display:flex; gap:8px; font-family:'JetBrains Mono',monospace; font-size:9px}
+  .af-metrics span{opacity:0.7}
+  .af-metrics .m-pink{color:#FF319F}
+  .af-metrics .m-amber{color:#FFC48A}
+  .app-frame .af-body{
+    flex:1; min-height:0; overflow:hidden; position:relative; z-index:1;
+    background:rgba(243,239,218,0.04); border-radius:10px; border:1px solid rgba(243,239,218,0.06);
+    padding:10px; display:flex; flex-direction:column; gap:6px;
+    backdrop-filter:blur(8px);
+  }
+  .af-school{font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#F3EFDA}
+  .af-district{font-size:9px; color:rgba(243,239,218,0.5); font-family:'JetBrains Mono',monospace}
+  .af-badges{display:flex; gap:4px; flex-wrap:wrap; margin-top:4px}
+  .af-badge{font-family:'JetBrains Mono',monospace; font-size:8px; padding:2px 6px; border-radius:6px; letter-spacing:0.03em}
+  .af-badge.title1{background:rgba(125,217,160,0.12); color:#7dd9a0; border:1px solid rgba(125,217,160,0.25)}
+  .af-badge.suburban{background:rgba(255,196,138,0.12); color:#FFC48A; border:1px solid rgba(255,196,138,0.25)}
+  .af-badge.charter{background:rgba(255,49,159,0.12); color:#FF319F; border:1px solid rgba(255,49,159,0.25)}
+  .af-section-label{font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:#FFC48A; margin-top:6px}
+  .af-stats-row{display:flex; gap:6px}
+  .af-stat-cell{flex:1; background:rgba(243,239,218,0.04); border-radius:8px; padding:6px 8px; text-align:center; border:1px solid rgba(243,239,218,0.06)}
+  .af-stat-cell .n{font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#F3EFDA; display:block}
+  .af-stat-cell .l{font-size:8px; color:rgba(243,239,218,0.5)}
+  .af-signals{display:flex; gap:4px; flex-wrap:wrap; margin-top:4px}
+  .af-signal{font-size:8px; padding:2px 6px; border-radius:10px; font-family:'JetBrains Mono',monospace}
+  .af-signal.green{background:rgba(125,217,160,0.12); color:#7dd9a0; border:1px solid rgba(125,217,160,0.2)}
+  .af-signal.amber{background:rgba(255,196,138,0.12); color:#FFC48A; border:1px solid rgba(255,196,138,0.2)}
+  .af-signal.pink{background:rgba(255,49,159,0.10); color:#FF319F; border:1px solid rgba(255,49,159,0.2)}
+  .af-opener{margin-top:6px; padding:8px; background:rgba(255,49,159,0.06); border-left:2px solid #FF319F; border-radius:0 8px 8px 0}
+  .af-opener .label{font-family:'JetBrains Mono',monospace; font-size:8px; color:#FF319F; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:3px}
+  .af-opener .text{font-size:11px; color:#F3EFDA; font-style:italic}
+  .app-frame .af-actions{
+    display:flex; gap:6px; position:relative; z-index:1;
+  }
+  .af-btn{
+    flex:1; padding:8px 0; border-radius:10px; text-align:center;
+    font-family:'Syne',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.02em;
+    border:none; cursor:default;
+  }
+  .af-btn.dial{
+    flex:1.3; background:linear-gradient(135deg,#FF319F,#ff5bb5); color:#fff;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 14px rgba(255,49,159,0.3);
+  }
+  .af-btn.research{background:rgba(255,196,138,0.12); border:1px solid rgba(255,196,138,0.4); color:#FFC48A}
+  .af-btn.pause{background:rgba(243,239,218,0.06); border:1px solid rgba(243,239,218,0.12); color:rgba(243,239,218,0.7)}
+
+  /* takeover overlay mockup */
+  .af-takeover{
+    position:absolute; inset:0; z-index:10; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding:20px; gap:12px;
+    background:rgba(59,20,42,0.95); border:2px solid #FF319F; border-radius:14px;
+    animation:mock-pulse 2s ease-in-out infinite;
+  }
+  @keyframes mock-pulse{0%,100%{border-color:#FF319F; box-shadow:0 0 20px rgba(255,49,159,0.3)} 50%{border-color:rgba(255,49,159,0.5); box-shadow:0 0 8px rgba(255,49,159,0.1)}}
+  .af-takeover-badge{
+    font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600; letter-spacing:0.15em;
+    text-transform:uppercase; background:#FF319F; color:#fff; padding:4px 12px; border-radius:20px;
+  }
+  .af-takeover-opener{font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:#F3EFDA; text-align:center; max-width:85%; line-height:1.5}
+  .af-takeover-backups{display:flex; flex-direction:column; gap:4px; align-items:center; margin-top:4px}
+  .af-takeover-backups span{font-size:10px; color:rgba(243,239,218,0.5); text-align:center}
+  .af-takeover-footer{font-family:'JetBrains Mono',monospace; font-size:8px; color:rgba(243,239,218,0.4); letter-spacing:0.05em; margin-top:8px}
+
+  /* email mockup */
+  .af-email-angles{display:flex; gap:4px; flex-wrap:wrap}
+  .af-angle-chip{
+    font-family:'JetBrains Mono',monospace; font-size:8px; padding:3px 8px; border-radius:8px;
+    background:rgba(255,196,138,0.12); border:1px solid rgba(255,196,138,0.3); color:#FFC48A;
+  }
+  .af-angle-chip.active{background:rgba(255,196,138,0.25); border-color:#FFC48A}
+  .af-email-card{
+    flex:1; min-height:0; overflow:hidden; background:rgba(243,239,218,0.04);
+    border-radius:8px; border:1px solid rgba(243,239,218,0.08); padding:8px;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .af-email-subject{font-family:'JetBrains Mono',monospace; font-size:9px; color:#FFC48A}
+  .af-email-body{font-size:9.5px; color:rgba(243,239,218,0.8); line-height:1.5; flex:1; overflow:hidden}
+  .af-email-btns{display:flex; gap:4px; margin-top:4px}
+  .af-email-btns span{font-family:'JetBrains Mono',monospace; font-size:8px; padding:3px 8px; border-radius:6px; cursor:default}
+  .af-email-btns .copy-s{background:rgba(255,196,138,0.15); color:#FFC48A; border:1px solid rgba(255,196,138,0.3)}
+  .af-email-btns .copy-b{background:rgba(255,49,159,0.12); color:#FF319F; border:1px solid rgba(255,49,159,0.25)}
+  .af-write-btn{
+    padding:6px 0; border-radius:8px; text-align:center; font-family:'Syne',sans-serif;
+    font-size:10px; font-weight:700; background:#FFC48A; color:#3B142A;
+  }
+
+  /* call strip mockup */
+  .af-callstrip{
+    display:flex; gap:4px; align-items:center; padding:6px 8px; position:relative; z-index:1;
+    background:rgba(243,239,218,0.03); border-radius:10px; border:1px solid rgba(243,239,218,0.06);
+    overflow-x:auto;
+  }
+  .af-strip-chip{
+    font-family:'JetBrains Mono',monospace; font-size:8px; padding:3px 8px;
+    border-radius:8px; white-space:nowrap; flex:none;
+  }
+  .af-strip-chip.done{background:rgba(243,239,218,0.06); color:rgba(243,239,218,0.5); border:1px solid rgba(243,239,218,0.08)}
+  .af-strip-chip.active{background:rgba(125,217,160,0.15); color:#7dd9a0; border:1px solid rgba(125,217,160,0.3)}
+  .af-strip-chip.alert{background:rgba(255,49,159,0.12); color:#FF319F; border:1px solid rgba(255,49,159,0.25)}
+  .af-strip-timer{font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(243,239,218,0.5); margin-left:auto; flex:none}
+
   @media(max-width:820px){
     .ba,.trust{grid-template-columns:1fr} .loop{grid-template-columns:1fr 1fr} .cards{grid-template-columns:1fr}
+    .mockup-grid{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -213,6 +340,173 @@
       </div>
     </div>
     <div class="detail" id="detail"><span class="d-k">During the call</span>Sidekick listens to the earpiece, transcribes it live, and reads the menu out loud to itself — then <b>presses the right digit</b> to route you to the right person. Dial-by-name and extensions too. You never touch the keypad.</div>
+  </section>
+
+  <section class="reveal">
+    <span class="mono tag">The interface</span>
+    <h2>What your reps actually see.</h2>
+    <p class="sub">Dark, focused, zero-distraction. Everything on one screen — no tabs, no switching.</p>
+    <div class="mockup-grid">
+
+      <!-- Mockup 1: Active Research -->
+      <div class="mockup-panel">
+        <div class="app-frame">
+          <div class="af-header">
+            <div class="af-dot green"></div>
+            <span class="af-encourage">You're locked in. Keep stacking.</span>
+            <div class="af-metrics"><span class="m-pink">3 calls</span><span class="m-amber">1 mtg</span></div>
+          </div>
+          <div class="af-body">
+            <div class="af-school">Westlake Hills Elementary</div>
+            <div class="af-district">Eanes ISD &middot; Austin, TX</div>
+            <div class="af-badges">
+              <span class="af-badge title1">Title I</span>
+              <span class="af-badge suburban">Suburban</span>
+            </div>
+            <span class="af-section-label">Wayground usage</span>
+            <div class="af-stats-row">
+              <div class="af-stat-cell"><span class="n">8</span><span class="l">teachers</span></div>
+              <div class="af-stat-cell"><span class="n">142</span><span class="l">activities</span></div>
+              <div class="af-stat-cell"><span class="n">3.2k</span><span class="l">responses</span></div>
+            </div>
+            <span class="af-section-label">Signals</span>
+            <div class="af-signals">
+              <span class="af-signal green">8 active teachers</span>
+              <span class="af-signal green">high frequency</span>
+              <span class="af-signal amber">no admin contact</span>
+              <span class="af-signal pink">IXL present</span>
+            </div>
+            <div class="af-opener">
+              <div class="label">Primary opener</div>
+              <div class="text">"I noticed 8 of your teachers found Wayground on their own — curious if you've seen what they're building?"</div>
+            </div>
+          </div>
+          <div class="af-actions">
+            <div class="af-btn dial">Dial next</div>
+            <div class="af-btn research">Research</div>
+            <div class="af-btn pause">| |</div>
+          </div>
+        </div>
+        <p class="mockup-caption">Research loaded — ready to dial</p>
+      </div>
+
+      <!-- Mockup 2: Take Over Alert -->
+      <div class="mockup-panel">
+        <div class="app-frame">
+          <div class="af-header">
+            <div class="af-dot pink"></div>
+            <span class="af-encourage" style="color:#FF319F; font-weight:700">Human detected!</span>
+            <div class="af-metrics"><span class="m-pink">3 calls</span><span class="m-amber">1 mtg</span></div>
+          </div>
+          <div class="af-body" style="position:relative">
+            <div class="af-takeover">
+              <span class="af-takeover-badge">TAKE OVER — human on the line</span>
+              <p class="af-takeover-opener">"I noticed 8 of your teachers found Wayground on their own — curious if you've seen what they're building?"</p>
+              <div class="af-takeover-backups">
+                <span>"Quick question about how your team handles test prep across grade levels?"</span>
+                <span>"Your 4th grade teachers are running some creative stuff — has that come up in PLCs?"</span>
+              </div>
+              <span class="af-takeover-footer">classifier paused &middot; confirmed by 2 verdicts</span>
+            </div>
+          </div>
+          <div class="af-actions">
+            <div class="af-btn dial" style="opacity:0.4">Dial next</div>
+            <div class="af-btn research" style="opacity:0.4">Research</div>
+            <div class="af-btn pause" style="opacity:0.4">| |</div>
+          </div>
+        </div>
+        <p class="mockup-caption">Human picks up — opener front and center</p>
+      </div>
+
+      <!-- Mockup 3: Email Generation -->
+      <div class="mockup-panel">
+        <div class="app-frame">
+          <div class="af-header">
+            <div class="af-dot green"></div>
+            <span class="af-encourage">Sharp email. Send it.</span>
+            <div class="af-metrics"><span class="m-pink">5 calls</span><span class="m-amber">1 mtg</span></div>
+          </div>
+          <div class="af-body">
+            <span class="af-section-label">Email angles</span>
+            <div class="af-email-angles">
+              <span class="af-angle-chip active">Teacher referral — Ms. Chen</span>
+              <span class="af-angle-chip">Usage proof</span>
+              <span class="af-angle-chip">WOL</span>
+              <span class="af-angle-chip">District peers</span>
+            </div>
+            <span class="af-section-label" style="margin-top:8px">Generated email</span>
+            <div class="af-email-card">
+              <div class="af-email-subject">subject: ms. chen's 4th graders</div>
+              <div class="af-email-body">
+                Hi Dr. Patel,<br><br>
+                Ms. Chen in 4th grade has been using Wayground for test prep this semester — her students are running through state-aligned practice sets on their own between classes.<br><br>
+                I help schools like Westlake Hills figure out if that kind of momentum is worth scaling to more classrooms.<br><br>
+                Worth a quick 10-minute call to see if it fits what you're planning for next year?<br><br>
+                Alex
+              </div>
+              <div class="af-email-btns">
+                <span class="copy-s">copy subject</span>
+                <span class="copy-b">copy body</span>
+              </div>
+            </div>
+          </div>
+          <div class="af-actions">
+            <div class="af-write-btn">Write email</div>
+          </div>
+        </div>
+        <p class="mockup-caption">Email drafted from one click</p>
+      </div>
+
+      <!-- Mockup 4: Call Timeline -->
+      <div class="mockup-panel">
+        <div class="app-frame">
+          <div class="af-header">
+            <div class="af-dot amber"></div>
+            <span class="af-encourage">Navigating the phone tree...</span>
+            <div class="af-metrics"><span class="m-pink">2 calls</span><span class="m-amber">0 mtg</span></div>
+          </div>
+          <div class="af-callstrip">
+            <span class="af-strip-chip done">Ringing</span>
+            <span class="af-strip-chip done">Menu detected</span>
+            <span class="af-strip-chip done">Pressed 1</span>
+            <span class="af-strip-chip done">Extension dialed</span>
+            <span class="af-strip-chip active">Ringing...</span>
+            <span class="af-strip-timer">01:34</span>
+          </div>
+          <div class="af-body">
+            <div class="af-school">Cedar Park Middle School</div>
+            <div class="af-district">Leander ISD &middot; Cedar Park, TX</div>
+            <div class="af-badges">
+              <span class="af-badge suburban">Suburban</span>
+              <span class="af-badge charter">5,200 students</span>
+            </div>
+            <span class="af-section-label">Wayground usage</span>
+            <div class="af-stats-row">
+              <div class="af-stat-cell"><span class="n">12</span><span class="l">teachers</span></div>
+              <div class="af-stat-cell"><span class="n">89</span><span class="l">activities</span></div>
+              <div class="af-stat-cell"><span class="n">1.8k</span><span class="l">responses</span></div>
+            </div>
+            <span class="af-section-label">Signals</span>
+            <div class="af-signals">
+              <span class="af-signal green">12 active teachers</span>
+              <span class="af-signal green">growing usage</span>
+              <span class="af-signal amber">Nearpod present</span>
+            </div>
+            <div class="af-opener">
+              <div class="label">Primary opener</div>
+              <div class="text">"A dozen teachers picked up Wayground without you having to ask — wondering if that's landed on your radar?"</div>
+            </div>
+          </div>
+          <div class="af-actions">
+            <div class="af-btn dial" style="opacity:0.4">Dial next</div>
+            <div class="af-btn research">Research</div>
+            <div class="af-btn pause">| |</div>
+          </div>
+        </div>
+        <p class="mockup-caption">IVR navigation — hands-free</p>
+      </div>
+
+    </div>
   </section>
 
   <section class="reveal">
