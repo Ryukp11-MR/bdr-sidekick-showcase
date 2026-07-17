@@ -143,7 +143,7 @@
   .start:hover{transform:translateY(-2px); box-shadow:0 12px 40px rgba(255,45,142,0.35)}
   .start{border:none; cursor:pointer}
   .setup{max-width:680px; margin:30px auto 0; display:grid; gap:14px; text-align:left}
-  .setup-card{background:var(--cream-06); border:1px solid var(--cream-12); border-radius:16px; padding:22px 24px}
+  .setup-card{background:var(--cream-06); border:1px solid var(--cream-12); border-radius:16px; padding:22px 24px; min-width:0}
   .setup-k{font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber)}
   .setup-card p{font-size:14.5px; color:var(--cream-60); margin:10px 0 14px} .setup-card b{color:var(--cream)}
   .steps{margin:14px 0 16px; padding-left:22px; display:grid; gap:9px}
@@ -151,7 +151,7 @@
   .steps li::marker{color:var(--amber); font-family:var(--mono); font-size:12px}
   .steps a{color:var(--amber); text-decoration:underline}
   .cmd{display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.28); border:1px solid var(--cream-12); border-radius:12px; padding:12px 14px}
-  .cmd code{font-family:var(--mono); font-size:13px; color:var(--cream); flex:1; overflow-x:auto; white-space:nowrap}
+  .cmd code{font-family:var(--mono); font-size:13px; color:var(--cream); flex:1; min-width:0; overflow-x:auto; white-space:nowrap}
   .cmd button{font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--plum); background:var(--amber); border:none; border-radius:8px; padding:7px 12px; cursor:pointer; flex:none; transition:background .2s ease}
   .cmd button:hover{background:#ffd6a8}
   footer{text-align:center; color:var(--cream-35); font-size:13px; padding-bottom:50px; font-family:var(--mono)}
@@ -305,7 +305,7 @@
   .intel-text .point h4{font-family:var(--serif); font-size:19px; font-weight:500; margin-bottom:6px}
   .intel-text .point p{font-size:14.5px; color:var(--cream-60); line-height:1.6}
   .intel-text .point .hl{color:var(--pink); font-weight:500}
-  @media(max-width:820px){.intel-grid{grid-template-columns:1fr} .af-priority .signal-line{font-size:11px} .af-priority .angle-line{font-size:12px} .af-open-with .q-text{font-size:12px} .af-dig-deeper .q-item{font-size:11px}}
+  @media(max-width:820px){.intel-grid,.intel-grid.img-right{grid-template-columns:1fr} .af-priority .signal-line{font-size:11px} .af-priority .angle-line{font-size:12px} .af-open-with .q-text{font-size:12px} .af-dig-deeper .q-item{font-size:11px}}
 
   /* call strip mockup */
   .af-callstrip{
