@@ -1,7 +1,7 @@
 # B2B SaaS Target Company List — Job-Search Outreach
 
 **Built:** July 2026 · **Owner:** Aritro · **Current package:** ₹29 LPA (reference only — comp annotated, not filtered)
-**Target roles:** SDR/BDR Manager or Account Executive · **Geography:** India-HQ SaaS + global SaaS with real India GTM teams
+**Target roles:** SDR/BDR Manager or Account Executive · **Geography:** India-HQ SaaS + global SaaS with real India GTM teams · **Based in:** Bangalore
 
 ---
 
@@ -25,6 +25,18 @@ Every company was screened against these signals. Tier 1 companies clear most of
 **Comp benchmarks (India, 2026):** AE average ≈ ₹24L; top 10% of AEs > ₹45L; Enterprise AE median OTE ≈ ₹65L (RepVue). Rippling India average total comp ≈ ₹59L (6figr); Rippling SDR median base ≈ ₹14L (Glassdoor). Your ₹29L is beatable at most Tier 1 companies in an AE or SDR-manager seat.
 
 **Market context (mid-2026):** Indian SaaS growing ~24% CAGR; 250+ Indian companies past $10M ARR; $1.26B raised across 103 rounds by April 2026 (+38% YoY). Counter-current: AI-driven layoffs at mega-vendors (Salesforce, Oracle, Meta ad-sales) hit India delivery/GTM centers in 2026 — which is why this list favors mid-stage growth companies over legacy giants.
+
+---
+
+## Bangalore lens
+
+You're based in Bangalore, so Tier 1 splits three ways (the tracker is sorted in this order):
+
+- **Bangalore office/HQ — no friction (14):** Rippling, Databricks, Snowflake, MongoDB*, Datadog*, 6sense, Freshworks (BLR office), Postman, Sprinto, MoEngage, Whatfix, DevRev, Everstage (BLR presence), Amagi. *Verify where sales seats actually sit — MongoDB's sales HQ is Gurgaon, Datadog's India GTM is newer.*
+- **Remote-friendly — location irrelevant (3):** Deel, BrowserStack (remote-first), Atlan (remote-first).
+- **Relocation or remote exception needed (8):** Chargebee & Rocketlane (Chennai), Darwinbox, HighRadius & Zenoti (Hyderabad), Mindtickle (Pune), CleverTap (Mumbai), Innovaccer (Noida). Still worth outreach — senior sales hires often get remote/hub exceptions, and several run small Bangalore satellite teams — but ask about location in the first conversation, not the last.
+
+Practical upshot: 17 of 25 Tier 1 targets need zero location compromise, and Bangalore is the single best city in India for this list — start there.
 
 ---
 
